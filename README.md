@@ -11,6 +11,12 @@ deleteBulk() - set bulk single body call method to DELETE,
 addBulkBody([bulk array]) - add array to bulk body requst,  
 getBulkBody() - get array of bulk body,  
 clearBulkBody() - clear bulk body   
+
+addBulkParams([
+	'limit' => int,
+	'page' => int,
+	'filters' => array
+], $id - if null add to last bulk object)
   
 example:  
   

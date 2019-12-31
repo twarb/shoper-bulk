@@ -17,8 +17,7 @@ class Bulk extends Resource
   
   public function addBulkBody($array = array())
   {
-    $id = count($this->bulkBody);
-    
+    $id = count($this->bulkBody);  
     
     $this->bulkBody[$id] = [
       
@@ -30,8 +29,26 @@ class Bulk extends Resource
       ];
    if($id == $this->limit-1) return 'bulk body is full';
    
-   return true;
+   return $this;
 
+  }
+  
+  public function addBulkParams($params, $id = null)
+  {
+	if(!isset($id) $id = count($this->bulkBody) - 1; 
+	
+	if(!isset($params['limit'])) $params['limit'] = 10;
+	if(!isset($params['page'])) $params['page'] = 1;
+	if(!isset($params['filters'])) $params['filters'] = null;
+	
+	$this->bulkBody[$id] += [ 'params' => [
+			'limit' => $params['limit'],
+			'page' => $params['page'],
+			'filters' => json_encode($params['filters'])
+		]
+	];
+	
+	return $this;
   }
   
   public function setBulkLimit($limit)

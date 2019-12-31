@@ -20,7 +20,7 @@ try{
 	die($ex->getMessage());
 }
 
-$resource = new \App\Shoper\Resource\Product($client);
+$resource = new \App\Shoper\Resource\ProductImage($client);
 
 try{
 	
@@ -28,7 +28,7 @@ try{
 	for($i = 0; $i < 25; $i++)
 	{
 		$code = $random + $i;
-		$bulk = $resource->postBulk()->addBulkBody([
+		$resource->postBulk()->addBulkBody([
 			'id' => $i,
 			'body' =>[	
 				'category_id' => 30793,
@@ -50,9 +50,42 @@ try{
 		]);
 	}
 	$bulkData 	= $resource->getBulkBody();
+	
 	$result 	= $resource->post($bulkData);
 	
 	var_dump($result);
+	
+} catch(\DreamCommerce\ShopAppstoreLib\Exception\Exception $ex) {
+	die($ex->getMessage());
+}
+
+echo '<hr>';
+
+try{
+	
+	$random = time();
+	
+		$resource->getBulk()->addBulkBody([
+			'id' => 1,
+			'body' => null
+		])->addBulkParams([ 'page' => 1, 'limit' => 50,
+		'filters' => [
+			'product_id' => 29368
+		]]);
+	
+	$bulkData = $resource->getBulkBody();
+		
+	$result = $resource->post($bulkData);
+	
+	foreach($result['items'][0]["body"]["list"] as $v)
+	{
+		echo 
+		'<hr>product_id: '.$v['product_id'].' <br>
+		img name: '.$v['name'] .'<br>
+		img unic_name: '.$v['unic_name'] .'<br>
+		img hidden: '.$v['hidden'].'<br>
+		url to img: <a href="https://shop-addres.com/userdata/gfx/'.$v['unic_name'].'.jpg">KLIK</a>';
+	}
 	
 } catch(\DreamCommerce\ShopAppstoreLib\Exception\Exception $ex) {
 	die($ex->getMessage());
